@@ -6,8 +6,9 @@ import * as THREE from "three";
 /**
  * Fullscreen background:
  * - base texture: /images/blackhole.png
- * - water-like wave distortion (time-based, more random/organic)
- * - mouse only adds gentle parallax/tilt (weaker)
+ * - water-like wave distortion
+ * - мягкий параллакс от мыши
+ * - на мобильных фон немного «отъезжает», чтобы не был таким крупным
  */
 export function ThreeBackground() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -36,6 +37,10 @@ export function ThreeBackground() {
       },
       uTexture: { value: null as THREE.Texture | null },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+
+      // новый масштаб и смещение текстуры
+      uTexScale: { value: 1.0 },              // 1.0 — как сейчас, <1 — «отъехать»
+      uTexOffset: { value: new THREE.Vector2(0.0, 0.0) }, // лёгкий сдвиг
     };
 
     const fragmentShader = `
@@ -45,6 +50,9 @@ export function ThreeBackground() {
       uniform vec2 uResolution;
       uniform sampler2D uTexture;
       uniform vec2 uMouse;
+
+      uniform float uTexScale;
+      uniform vec2 uTexOffset;
 
       varying vec2 vUv;
 
@@ -80,19 +88,7 @@ export function ThreeBackground() {
       }
 
       void main() {
-        // --- НОВОЕ: zoom для портретных экранов ---
-        float screenAspect = uResolution.x / uResolution.y;
-        float zoom = 1.0;
-
-        // если экран "узкий и высокий" — чуть увеличиваем фон,
-        // чтобы он обрезался по краям, а не ужимался
-        if (screenAspect < 0.9) {
-          zoom = 0.6; // можно поиграть: 0.5–0.7
-        }
-
-        // масштабируем uv относительно центра (0.5, 0.5)
-        vec2 uv = (vUv - 0.5) * zoom + 0.5;
-        // --- конец блока zoom ---
+        vec2 uv = vUv;
 
         float aspect = uResolution.x / uResolution.y;
         vec2 centered = (uv - 0.5);
@@ -100,11 +96,10 @@ export function ThreeBackground() {
 
         float t = uTime * 0.10;
 
-        // --- Более "рандомные" водяные волны ---
+        // --- волны ---
         float base = fbm(centered * 8.8 + vec2(t * 0.35, -t * 0.25));
         float detail = fbm(centered * 10.0 - vec2(t * 0.55, t * 0.4));
         float waves = base * 1.7 + detail * 0.3;
-
         waves += 0.10 * sin(uv.y * 35.0 + t * 1.6);
 
         vec2 waveOffset = vec2(
@@ -112,15 +107,16 @@ export function ThreeBackground() {
           (waves - 0.5) * 0.03
         );
 
-        // --- Параллакс/наклон от мыши (ослаблен) ---
+        // --- параллакс от мыши ---
         vec2 m = uMouse;
         vec2 mCentered = (m - 0.2) * vec2(1.0, -1.0);
         vec2 parallaxOffset = mCentered * 0.005;
 
-        vec2 distortedUv = uv + waveOffset - parallaxOffset;
+        // --- масштаб и смещение текстуры ---
+        // uTexScale < 1.0 => видим больше картинки (как бы «отдалили» камеру)
+        vec2 baseUv = (uv - 0.5) / uTexScale + 0.5 + uTexOffset;
 
-        // горизонтальное отражение
-        distortedUv.x = 1.0 - distortedUv.x;
+        vec2 distortedUv = baseUv + waveOffset - parallaxOffset;
 
         distortedUv = clamp(distortedUv, 0.0, 1.0);
 
@@ -158,21 +154,40 @@ export function ThreeBackground() {
     scene.add(mesh);
 
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load(
-      "/images/blackhole.png",
-      () => {
-        texture.wrapS = THREE.ClampToEdgeWrapping;
-        texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.minFilter = THREE.LinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        uniforms.uTexture.value = texture;
+    const texture = textureLoader.load("/images/blackhole.png", () => {
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      uniforms.uTexture.value = texture;
+    });
+
+    // функция, которая подстраивает масштаб под размер экрана
+    const updateScaleForViewport = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      uniforms.uResolution.value.set(w, h);
+
+      const isPortrait = h > w;
+
+      if (isPortrait) {
+        // мобильный портрет: чуть отодвигаем и опускаем гору
+        uniforms.uTexScale.value = 0.8;              // было 1.0 — стало поменьше
+        uniforms.uTexOffset.value.set(0.0, -0.08);   // чуть вниз, чтобы вершина не упиралась в статусбар
+      } else {
+        // десктоп / ландшафт — как раньше
+        uniforms.uTexScale.value = 1.0;
+        uniforms.uTexOffset.value.set(0.0, 0.0);
       }
-    );
+
+      renderer.setSize(w, h);
+    };
+
+    updateScaleForViewport();
 
     const onResize = () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+      updateScaleForViewport();
     };
 
     window.addEventListener("resize", onResize);
