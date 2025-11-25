@@ -117,6 +117,7 @@ export function ThreeBackground() {
         vec2 baseUv = (uv - 0.5) / uTexScale + 0.5 + uTexOffset;
 
         vec2 distortedUv = baseUv + waveOffset - parallaxOffset;
+        distortedUv.x = 1.0 - distortedUv.x;
 
         distortedUv = clamp(distortedUv, 0.0, 1.0);
 
