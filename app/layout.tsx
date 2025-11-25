@@ -1,10 +1,15 @@
-import "./globals.css";
+// app/layout.tsx
 import type { Metadata } from "next";
-import React from "react";
+import "./globals.css";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
-  title: "Hajime Biography Demo",
-  description: "Demo of three.js background and horizontal biography layout",
+  title: "CIO — Кирилл Ковтун",
 };
 
 export default function RootLayout({
@@ -13,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="ru" className={inter.variable}>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }
