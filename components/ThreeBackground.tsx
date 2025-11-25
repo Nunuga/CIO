@@ -80,7 +80,19 @@ export function ThreeBackground() {
       }
 
       void main() {
-        vec2 uv = vUv;
+        // --- НОВОЕ: zoom для портретных экранов ---
+        float screenAspect = uResolution.x / uResolution.y;
+        float zoom = 1.0;
+
+        // если экран "узкий и высокий" — чуть увеличиваем фон,
+        // чтобы он обрезался по краям, а не ужимался
+        if (screenAspect < 0.9) {
+          zoom = 0.6; // можно поиграть: 0.5–0.7
+        }
+
+        // масштабируем uv относительно центра (0.5, 0.5)
+        vec2 uv = (vUv - 0.5) * zoom + 0.5;
+        // --- конец блока zoom ---
 
         float aspect = uResolution.x / uResolution.y;
         vec2 centered = (uv - 0.5);
@@ -89,16 +101,12 @@ export function ThreeBackground() {
         float t = uTime * 0.10;
 
         // --- Более "рандомные" водяные волны ---
-        // крупная структура
         float base = fbm(centered * 8.8 + vec2(t * 0.35, -t * 0.25));
-        // мелкие детали
         float detail = fbm(centered * 10.0 - vec2(t * 0.55, t * 0.4));
         float waves = base * 1.7 + detail * 0.3;
 
-        // немного направленной волны, чтобы были "полосы", но очень мягко
         waves += 0.10 * sin(uv.y * 35.0 + t * 1.6);
 
-        // финальное смещение (помягче)
         vec2 waveOffset = vec2(
           (waves - 0.5) * 0.03,
           (waves - 0.5) * 0.03
@@ -107,15 +115,13 @@ export function ThreeBackground() {
         // --- Параллакс/наклон от мыши (ослаблен) ---
         vec2 m = uMouse;
         vec2 mCentered = (m - 0.2) * vec2(1.0, -1.0);
-        vec2 parallaxOffset = mCentered * 0.005; // было 0.04
+        vec2 parallaxOffset = mCentered * 0.005;
 
         vec2 distortedUv = uv + waveOffset - parallaxOffset;
 
-        
-        // горизонтальное отражение жёсткое:
+        // горизонтальное отражение
         distortedUv.x = 1.0 - distortedUv.x;
 
-        // clamp на всякий случай
         distortedUv = clamp(distortedUv, 0.0, 1.0);
 
         vec4 tex = texture2D(uTexture, distortedUv);
@@ -171,7 +177,6 @@ export function ThreeBackground() {
 
     window.addEventListener("resize", onResize);
 
-    // мышь: только обновляем положение для параллакса (без влияния на волны)
     const onMouseMove = (e: MouseEvent) => {
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
