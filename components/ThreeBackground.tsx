@@ -120,7 +120,7 @@ export function ThreeBackground() {
         vec2 distortedUv = uv + waveOffset - parallaxOffset;
 
         // горизонтальное отражение
-        distortedUv.x = 1.0 - distortedUv.x;
+        // distortedUv.x = 1.0 - distortedUv.x;
 
         distortedUv = clamp(distortedUv, 0.0, 1.0);
 
