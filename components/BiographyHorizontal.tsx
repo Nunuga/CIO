@@ -30,7 +30,11 @@ function ArrowIcon({ dir }: { dir: "left" | "right" }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      {dir === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 6l6 6-6 6" />}
+      {dir === "left" ? (
+        <path d="M15 18l-6-6 6-6" />
+      ) : (
+        <path d="M9 6l6 6-6 6" />
+      )}
     </svg>
   );
 }
@@ -73,7 +77,8 @@ export function BiographyHorizontal() {
   // ✅ Лид-магнит (положи файл в /public/docs/it-audit-checklist.pdf)
   const leadMagnetHref = "/docs/it-audit-checklist.pdf";
 
-  const slides: Slide[] = useMemo(
+  // ✅ ВАЖНО: типизируем useMemo, чтобы ctx в render НЕ был any
+  const slides = useMemo<Slide[]>(
     () => [
       {
         id: "header",
