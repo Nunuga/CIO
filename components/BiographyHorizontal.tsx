@@ -23,7 +23,7 @@ const items = [
   {
     id: "hero",
     content: (
-      <div className="flex flex-col gap-8 sm:gap-10 max-w-3xl">
+      <div className="flex flex-col gap-4 sm:gap-4 max-w-3xl">
         <div className="flex flex-col gap-2 sm:gap-3">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold leading-snug">
             Партнёр по архитектуре и управлению сложными ИТ-системами
@@ -63,60 +63,60 @@ const items = [
     id: "why",
     content: (
       <div className="space-y-1 sm:space-y-2 max-w-2xl">
-        <div className="space-y-1 sm:space-y-2">
+        {/* <div className="space-y-1 sm:space-y-2">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Почему со мной работают
           </div>
-
+        </div> */}
+         <div className="space-y-1 sm:space-y-2">
+          <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
+            Почему со мной работают
+          </div>
           <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            Более 6 лет занимаюсь разработкой и архитектурой государственных
-            информационных систем. Знаю, как соединить требования бизнеса,
-            государства и реальных команд разработки.
-          </p>
-
-          <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            Руководил разработкой и запуском крупных АИС, интегрированных с
-            федеральными органами власти и регионами. Вёл проекты от аналитики и
-            архитектуры до промышленной эксплуатации и сопровождения.
-          </p>
-
-          <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            Работаю там, где стандартных решений уже недостаточно: сложные
-            интеграции, высокая нагрузка, строгие регуляторные требования,
-            несколько стейкхолдеров с разными интересами.
+            {/* Работаю как внешний CIO, руководитель разработки и архитектурный
+            консультант. Помогаю компаниям выстроить зрелую IT-функцию, повысить
+            устойчивость систем и получить понятный roadmap развития. */}
           </p>
         </div>
 
         <div className="flex flex-col divide-y divide-white/45 text-sm sm:text-base md:text-lg">
           <div className="py-1 sm:py-2">
-            <div className="font-semibold">Опыт гос-АИС</div>
+            <div className="font-semibold">Глубокий опыт федеральных АИС</div>
             <p className="text-white/70 max-w-xl">
-              Федеральный уровень, внедрения во всех регионах страны, учёт
-              требований регуляторов и ИБ.
+              Более шести лет проектирую и развиваю государственные
+              информационные системы. Понимаю, как соединить интересы бизнеса,
+              государства и реальных команд разработки.
             </p>
           </div>
-
           <div className="py-1 sm:py-2">
-            <div className="font-semibold">Архитектор и управленец</div>
+            <div className="font-semibold">
+              Архитектор и управленец в одном лице
+            </div>
             <p className="text-white/70 max-w-xl">
-              Комбинирую техническую глубину с управлением командами и
-              приоритизацией задач.
+              Умею проектировать сложные системы, выстраивать процессы,
+              управлять командами и приводить проекты к промышленной
+              эксплуатации.
             </p>
           </div>
-
           <div className="py-1 sm:py-2">
-            <div className="font-semibold">Фокус на эффекте</div>
+            <div className="font-semibold">Работаю со сложными кейсами</div>
             <p className="text-white/70 max-w-xl">
-              Считаем результат в цифрах: снижение ручного труда, меньше
-              инцидентов, быстрее релизы.
+              Интеграции, высокая нагрузка, множества стейкхолдеров, строгие
+              регуляторные требования — там, где «типовые решения» не подходят.
             </p>
           </div>
-
           <div className="py-1 sm:py-2">
-            <div className="font-semibold">Честная коммуникация</div>
+            <div className="font-semibold">Фокус на измеримом эффекте</div>
             <p className="text-white/70 max-w-xl">
-              Объясняю риски и ограничения простым языком, без «магии» и
-              завышенных обещаний.
+              Опираюсь на результаты: снижение инцидентов, повышение скорости
+              релизов, прозрачность процессов, экономия времени и ресурсов.
+            </p>
+          </div>
+          <div className="py-1 sm:py-2">
+            <div className="font-semibold">Честная и ясная коммуникация</div>
+            <p className="text-white/70 max-w-xl">
+              Говорю простым языком, объясняю риски, формирую реалистичные
+              ожидания — без магии и завышенных обещаний.
             </p>
           </div>
         </div>
@@ -127,15 +127,15 @@ const items = [
   {
     id: "services",
     content: (
-      <div className="max-w-3xl space-y-8 sm:space-y-10">
+      <div className="max-w-3xl space-y-8 sm:space-y-4">
         <div className="space-y-1 sm:space-y-2">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Комплексные IT-решения и услуги
           </div>
           <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            Работаю как внешний CIO / руководитель разработки или архитектурный
-            консультант — помогаю выстроить устойчивую IT-функцию и понятный
-            roadmap развития.
+            Работаю как внешний CIO, руководитель разработки и архитектурный
+            консультант. Помогаю компаниям выстроить зрелую IT-функцию, повысить
+            устойчивость систем и получить понятный roadmap развития.
           </p>
         </div>
 
@@ -144,31 +144,36 @@ const items = [
             {[
               {
                 title: "CIO / руководитель разработки (part-time)",
-                text: "Архитектурные решения, приоритизация задач, организация разработки и взаимодействие с бизнесом.",
+                text: "Выстраиваю управляемое развитие продуктов и архитектуры: задаю приоритеты, координирую работу команды разработки, контролирую релизы и обеспечиваю прозрачную коммуникацию с бизнесом.",
               },
+
               {
                 title: "Архитектурный и технологический аудит",
-                text: "Анализ архитектуры, узких мест, интеграций и процессов. План развития на 3–6 месяцев с оценкой рисков и набором quick-wins.",
+                text: "Провожу комплексный анализ архитектуры, интеграций и процессов разработки. Определяю риски, узкие места и формирую план развития на 3–6 месяцев с конкретными рекомендациями и quick-wins.",
               },
+
               {
                 title: "Проектирование АИС и платформ",
-                text: "Архитектура государственных и корпоративных систем: модель данных, контуры интеграций, отказоустойчивость и масштабирование.",
+                text: "Формирую устойчивые решения: модули, данные, масштабирование, отказоустойчивость, очереди и событийные процессы.",
               },
+
               {
                 title: "Интеграции с гос-ИС и внешними системами",
-                text: "Устойчивые интеграции с государственными информационными системами и смежными платформами.",
+                text: "Проектирую надёжные интеграционные контуры: адаптеры, анти-коррупционный слой, очереди, механики повторов, идемпотентность и мониторинг с соблюдением SLA и полной наблюдаемостью.",
               },
+
               {
-                title: "Процессы разработки и CI/CD",
-                text: "Конвейер разработки: планирование, код-ревью, тесты, релизы, мониторинг и обратная связь.",
+                title: "Процессы разработки, DevSecOps и CI/CD",
+                text: "Выстраиваю зрелый цикл разработки: конвейер CI/CD, регламенты, код-ревью, тестирование, автоматизация, контроль качества релизов и мониторинг на всех этапах.",
               },
-              {
-                title: "Безопасность и аттестация",
-                text: "Учёт требований ИБ, модель угроз, подготовка к аттестации, журналирование и контроль доступа.",
-              },
+
+              // {
+              //   title: "Информационная безопасность и аттестация",
+              //   text: "Прорабатываю модель угроз, настраиваю сегментацию, DMZ, журналирование и контроль доступа. Готовлю системы к аттестации ФСТЭК/ФСБ с полным набором документов и рекомендаций.",
+              // },
             ].map((s) => (
               <div key={s.title} className="py-1 sm:py-2">
-                <div className="font-semibold text-base sm:text-lg md:text-2xl mb-1 sm:mb-2">
+                <div className="font-semibold text-base sm:text-lg md:text-2xl mb-1 sm:mb-1">
                   {s.title}
                 </div>
                 <p className="text-white/70 max-w-2xl">{s.text}</p>
@@ -183,7 +188,7 @@ const items = [
   {
     id: "projects",
     content: (
-      <div className="w-full max-w-[min(100vw-2.5rem,52rem)] space-y-4 md:space-y-10">
+      <div className="w-full max-w-[min(100vw-2.5rem,52rem)] space-y-4 md:space-y-4">
         <div className="space-y-1 md:space-y-2">
           <h2 className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Примеры реализованных проектов
@@ -361,7 +366,11 @@ function ArrowIcon({ dir }: { dir: "left" | "right" }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      {dir === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 6l6 6-6 6" />}
+      {dir === "left" ? (
+        <path d="M15 18l-6-6 6-6" />
+      ) : (
+        <path d="M9 6l6 6-6 6" />
+      )}
     </svg>
   );
 }
@@ -495,7 +504,9 @@ export function BiographyHorizontal() {
                 className={`
                   relative flex-none w-screen h-screen
                   flex px-4 sm:px-6 md:px-16 lg:px-24
-                  ${isMain ? "pt-14 sm:pt-16 md:py-0" : "py-10 sm:py-12 md:py-0"}
+                  ${
+                    isMain ? "pt-14 sm:pt-16 md:py-0" : "py-10 sm:py-12 md:py-0"
+                  }
                   overflow-y-auto
                   ${alignClass}
                 `}
