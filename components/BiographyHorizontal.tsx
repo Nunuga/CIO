@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { HeroStats } from "./HeroStats";
 import { ContactForm } from "./ContactForm";
 
@@ -14,7 +15,7 @@ type SlideCtx = {
 
 type Slide = {
   id: string;
-  render: (ctx: SlideCtx) => React.ReactNode;
+  render: (ctx: SlideCtx) => ReactNode;
 };
 
 function ArrowIcon({ dir }: { dir: "left" | "right" }) {
@@ -119,7 +120,6 @@ export function BiographyHorizontal() {
                 </span>
               </div>
 
-              {/* ✅ Главное: CTA в первом экране */}
               <div className="flex flex-wrap gap-2 pt-2">
                 <button
                   type="button"
@@ -255,7 +255,6 @@ export function BiographyHorizontal() {
                 ))}
               </div>
 
-              {/* ✅ CTA после списка услуг */}
               <div className="pt-5">
                 <button
                   type="button"
@@ -270,7 +269,6 @@ export function BiographyHorizontal() {
         ),
       },
 
-      // ✅ НОВЫЙ СЛАЙД — то, что “продаёт” лучше всего
       {
         id: "pricing",
         render: ({ goToContacts, leadMagnetHref }) => (
@@ -291,9 +289,7 @@ export function BiographyHorizontal() {
                   Быстрый старт
                 </div>
                 <div className="mt-1 text-lg font-semibold">Экспресс-аудит (7–10 дней)</div>
-                <div className="mt-1 text-white/80 text-sm">
-                  80–150k ₽
-                </div>
+                <div className="mt-1 text-white/80 text-sm">80–150k ₽</div>
                 <ul className="mt-3 space-y-1 text-sm text-white/70">
                   <li>— архитектура / интеграции / релизный процесс</li>
                   <li>— риски и узкие места</li>
@@ -305,10 +301,10 @@ export function BiographyHorizontal() {
                 <div className="text-xs uppercase tracking-[0.25em] text-white/70">
                   Системно
                 </div>
-                <div className="mt-1 text-lg font-semibold">Roadmap / проектирование (3–6 недель)</div>
-                <div className="mt-1 text-white/80 text-sm">
-                  150–350k ₽
+                <div className="mt-1 text-lg font-semibold">
+                  Roadmap / проектирование (3–6 недель)
                 </div>
+                <div className="mt-1 text-white/80 text-sm">150–350k ₽</div>
                 <ul className="mt-3 space-y-1 text-sm text-white/70">
                   <li>— модель данных и контуры взаимодействия</li>
                   <li>— масштабирование и отказоустойчивость</li>
@@ -320,10 +316,10 @@ export function BiographyHorizontal() {
                 <div className="text-xs uppercase tracking-[0.25em] text-white/70">
                   Поддержка
                 </div>
-                <div className="mt-1 text-lg font-semibold">CIO / Руководитель разработки (part-time)</div>
-                <div className="mt-1 text-white/80 text-sm">
-                  150–250k ₽ / месяц
+                <div className="mt-1 text-lg font-semibold">
+                  CIO / Руководитель разработки (part-time)
                 </div>
+                <div className="mt-1 text-white/80 text-sm">150–250k ₽ / месяц</div>
                 <ul className="mt-3 space-y-1 text-sm text-white/70">
                   <li>— приоритизация, постановка системного управления</li>
                   <li>— контроль качества релизов и процессов</li>
@@ -464,7 +460,6 @@ export function BiographyHorizontal() {
                 Часто начинаем с короткого онлайн-созвона на 20–30 минут.
               </p>
 
-              {/* ✅ Быстрый путь “в 1 клик” */}
               <a
                 href={tgLink}
                 target="_blank"
@@ -632,6 +627,8 @@ export function BiographyHorizontal() {
         >
           {slides.map((slide, index) => {
             const isMain = slide.id === MAIN_SLIDE_ID;
+
+            // header: мобилка — вверх/влево, десктоп — центр по вертикали, слева по горизонтали
             const alignClass = isMain
               ? "items-start justify-start md:items-center md:justify-start"
               : "items-center justify-center md:justify-end";
