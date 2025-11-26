@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "CIO — Кирилл Ковтун",
   icons: {
-    icon: [{ url: "/kk.png", type: "image/png" }],
+    icon: "/images/kk.png",
     // apple: "/apple-icon.png",
   },
 };
