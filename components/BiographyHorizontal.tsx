@@ -348,7 +348,7 @@ const items = [
           <input
             type="hidden"
             name="_next"
-            value="https://your-domain.ru/thanks"
+            value="https://cio-chi.vercel.app/"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
