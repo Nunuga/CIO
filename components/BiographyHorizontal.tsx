@@ -495,7 +495,7 @@ export function BiographyHorizontal() {
                 className={`
                   relative flex-none w-screen h-screen
                   flex px-4 sm:px-6 md:px-16 lg:px-24
-                  ${isMain ? "pt-6 sm:pt-10 md:py-0" : "py-10 sm:py-12 md:py-0"}
+                  ${isMain ? "pt-10 sm:pt-14 md:py-0" : "py-10 sm:py-12 md:py-0"}
                   overflow-y-auto
                   ${alignClass}
                 `}
