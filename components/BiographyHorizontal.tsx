@@ -24,27 +24,30 @@ const items = [
     id: "hero",
     content: (
       <div className="flex flex-col gap-8 sm:gap-10 max-w-3xl">
-        <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="flex flex-col gap-2 sm:gap-3">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold leading-snug">
             Партнёр по архитектуре и управлению сложными ИТ-системами
           </div>
 
           <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            Помогаю компаниям и государственным заказчикам строить устойчивые
-            информационные системы: от архитектуры и процессов разработки до
-            интеграций и эксплуатации. Опыт федеральных проектов, работающих для
-            89 субъектов РФ.
+            Помогаю компаниям и государственным заказчикам создавать устойчивые
+            цифровые решения — от анализа потребностей и процессов разработки до
+            интеграций и эксплуатации. Опыт построения федеральных АИС,
+            работающих для 89 субъектов РФ.
           </p>
 
           <div className="flex flex-wrap gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
-            <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
+            <span className="bg-white text-black px-2 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
               CI/CD и DevSecOps
             </span>
             <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
-              Интеграции с ФОИВ и регионами
+              Проектирование масштабируемых АИС
             </span>
             <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
-              Патентованные архитектуры
+              Архитектурный консалтинг и аудит
+            </span>
+            <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
+              Управление командами разработки
             </span>
           </div>
         </div>
@@ -358,15 +361,7 @@ function ArrowIcon({ dir }: { dir: "left" | "right" }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      {dir === "left" ? (
-        <>
-          <path d="M15 18l-6-6 6-6" />
-        </>
-      ) : (
-        <>
-          <path d="M9 6l6 6-6 6" />
-        </>
-      )}
+      {dir === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 6l6 6-6 6" />}
     </svg>
   );
 }
@@ -452,7 +447,6 @@ export function BiographyHorizontal() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (isAnimatingRef.current) return;
-
       if (e.key === "ArrowRight") goTo(activeIndexRef.current + 1);
       if (e.key === "ArrowLeft") goTo(activeIndexRef.current - 1);
     };
@@ -487,8 +481,10 @@ export function BiographyHorizontal() {
         >
           {items.map((item, index) => {
             const isMain = item.id === MAIN_SLIDE_ID;
+
+            // ✅ header: мобилка — вверх/влево, десктоп — как было (влево по горизонтали, по вертикали центр)
             const alignClass = isMain
-              ? "items-center justify-center md:justify-start"
+              ? "items-start justify-start md:items-center md:justify-start"
               : "items-center justify-center md:justify-end";
 
             const isActive = index === activeIndex;
@@ -499,7 +495,7 @@ export function BiographyHorizontal() {
                 className={`
                   relative flex-none w-screen h-screen
                   flex px-4 sm:px-6 md:px-16 lg:px-24
-                  py-10 sm:py-12 md:py-0
+                  ${isMain ? "pt-6 sm:pt-10 md:py-0" : "py-10 sm:py-12 md:py-0"}
                   overflow-y-auto
                   ${alignClass}
                 `}
@@ -509,7 +505,11 @@ export function BiographyHorizontal() {
                     relative max-w-3xl
                     text-base md:text-lg leading-relaxed
                     transition-all duration-700
-                    ${isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"}
+                    ${
+                      isActive
+                        ? "opacity-100 translate-x-0"
+                        : "opacity-0 translate-x-6"
+                    }
                   `}
                 >
                   {item.content}

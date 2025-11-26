@@ -56,6 +56,9 @@ const StatRow: React.FC<StatRowProps> = ({
 
 export const HeroStats: React.FC = () => (
   <div className="max-w-2xl flex flex-col  divide-white/15 text-sm md:text-base">
+    <div className="text-xl sm:text-2xl md:text-4xl font-semibold leading-snug">
+            Цифры, которые говорят обо мне
+          </div>
     <StatRow
       label="Масштаб систем"
       title="89 регионов"
@@ -77,16 +80,16 @@ export const HeroStats: React.FC = () => (
       percent={65}
       delay={300}
     />
-    <StatRow
+    {/* <StatRow
       label="Команды"
       title="15+ специалистов"
       subtitle="Мультидисциплинарные команды"
       percent={70}
       delay={450}
-    />
+    /> */}
      <StatRow
       label="Пользователи"
-      title="10k+ пользователей"
+      title="+ 10 000 пользователей в продуктивной эксплуатации"
       subtitle="Ежедневная нагрузка в продуктиве"
       percent={90}
       delay={600}
