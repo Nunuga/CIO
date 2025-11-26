@@ -14,30 +14,55 @@ function AppleToast({
   return (
     <div
       className={[
-        "fixed top-5 right-4 sm:right-8 z-[60]",
-        "transition-all duration-300 ease-out",
-        open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none",
+        "fixed inset-0 z-[60]",
+        "grid place-items-center",
+        "transition duration-300 ease-out",
+        open ? "opacity-100" : "opacity-0 pointer-events-none",
       ].join(" ")}
       role="status"
       aria-live="polite"
     >
-      <div className="min-w-[260px] max-w-[360px] rounded-2xl border border-white/12 bg-black/55 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] px-4 py-3">
+      {/* карточка уведомления */}
+      <div
+        className={[
+          "rounded-2xl border border-white/12 bg-black/55 backdrop-blur-xl",
+          "shadow-[0_20px_60px_rgba(0,0,0,0.55)]",
+          "px-5 py-4",
+          "w-[min(92vw,420px)]",
+          "transition-all duration-300 ease-out",
+          open ? "scale-100 translate-y-0" : "scale-95 translate-y-2",
+        ].join(" ")}
+      >
         <div className="flex items-start gap-3">
-          <div className="mt-0.5 h-9 w-9 rounded-full bg-white/10 grid place-items-center border border-white/10">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 text-white/90" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <div className="mt-0.5 h-10 w-10 rounded-full bg-white/10 grid place-items-center border border-white/10">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5 text-white/90"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
               <path d="M20 6L9 17l-5-5" />
             </svg>
           </div>
 
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-white/95 leading-5">{title}</div>
-            <div className="text-xs text-white/70 leading-5 mt-0.5">{subtitle}</div>
+            <div className="text-base font-semibold text-white/95 leading-6">
+              {title}
+            </div>
+            <div className="text-sm text-white/70 leading-6 mt-0.5">
+              {subtitle}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement | null>(null);
