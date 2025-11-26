@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 function AppleToast({
   open,
@@ -14,21 +15,18 @@ function AppleToast({
   return (
     <div
       className={[
-        "fixed inset-0 z-[60]",
-        "grid place-items-center",
+        "fixed inset-0 z-[9999] grid place-items-center",
         "transition duration-300 ease-out",
         open ? "opacity-100" : "opacity-0 pointer-events-none",
       ].join(" ")}
       role="status"
       aria-live="polite"
     >
-      {/* карточка уведомления */}
       <div
         className={[
-          "rounded-2xl border border-white/12 bg-black/55 backdrop-blur-xl",
+          "w-[min(92vw,420px)] rounded-2xl px-5 py-4",
+          "border border-white/12 bg-black/55 backdrop-blur-xl",
           "shadow-[0_20px_60px_rgba(0,0,0,0.55)]",
-          "px-5 py-4",
-          "w-[min(92vw,420px)]",
           "transition-all duration-300 ease-out",
           open ? "scale-100 translate-y-0" : "scale-95 translate-y-2",
         ].join(" ")}
@@ -63,11 +61,15 @@ function AppleToast({
   );
 }
 
-
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [toastOpen, setToastOpen] = useState(false);
   const [sending, setSending] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const showToast = () => {
     setToastOpen(true);
@@ -88,24 +90,23 @@ export function ContactForm() {
       const honey = formData.get("_honey");
       if (typeof honey === "string" && honey.trim().length > 0) {
         form.reset();
-        setSending(false);
         return;
       }
 
-      const res = await fetch("https://formsubmit.co/ajax/kovtun.k.s.nun@gmail.com", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
-      });
+      const res = await fetch(
+        "https://formsubmit.co/ajax/kovtun.k.s.nun@gmail.com",
+        {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        }
+      );
 
       if (!res.ok) throw new Error("Submit failed");
 
       showToast();
-      form.reset(); // очистить форму до пустой
+      form.reset();
     } catch (err) {
-      // если хочешь — можно показывать отдельный toast ошибки
       alert("Не удалось отправить сообщение. Попробуйте позже.");
     } finally {
       setSending(false);
@@ -114,7 +115,8 @@ export function ContactForm() {
 
   return (
     <>
-      <AppleToast open={toastOpen} />
+      {/* IMPORTANT: Portal, чтобы fixed был относительно всего окна (а не transform-контейнера слайдера) */}
+      {mounted && createPortal(<AppleToast open={toastOpen} />, document.body)}
 
       <form
         ref={formRef}
@@ -123,7 +125,11 @@ export function ContactForm() {
       >
         {/* FormSubmit settings */}
         <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_subject" value="Заявка с сайта (cio-chi.vercel.app)" />
+        <input
+          type="hidden"
+          name="_subject"
+          value="Заявка с сайта (cio-chi.vercel.app)"
+        />
 
         {/* honeypot */}
         <input
@@ -164,7 +170,9 @@ export function ContactForm() {
           disabled={sending}
           className={[
             "self-start px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition",
-            sending ? "bg-white/70 text-black cursor-not-allowed" : "bg-white text-black hover:bg-white/80",
+            sending
+              ? "bg-white/70 text-black cursor-not-allowed"
+              : "bg-white text-black hover:bg-white/80",
           ].join(" ")}
         >
           {sending ? "Отправка…" : "Отправить"}
