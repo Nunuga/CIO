@@ -25,7 +25,9 @@ export function ThreeBackground() {
 
     const uniforms = {
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      uResolution: {
+        value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+      },
       uTexture: { value: null as THREE.Texture | null },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
 
@@ -160,11 +162,11 @@ export function ThreeBackground() {
 
       // подбираем кадрирование именно для мобильного портрета
       if (isSmall && isPortrait) {
-        uniforms.uTexScale.value = 1.15;              // чуть приблизить (убрать «пустоту»)
-        uniforms.uTexOffset.value.set(0.0, -0.06);    // слегка вниз (чтобы пик не упирался)
+        uniforms.uTexScale.value = 1.18; // чуть сильнее cover, чтобы не появились пустые края
+        uniforms.uTexOffset.value.set(0.0, 0.08); // ✅ вниз (было отрицательное)
       } else if (isPortrait) {
-        uniforms.uTexScale.value = 1.08;
-        uniforms.uTexOffset.value.set(0.0, -0.03);
+        uniforms.uTexScale.value = 1.1;
+        uniforms.uTexOffset.value.set(0.0, 0.04);
       } else {
         uniforms.uTexScale.value = 1.0;
         uniforms.uTexOffset.value.set(0.0, 0.0);
@@ -196,7 +198,10 @@ export function ThreeBackground() {
     window.addEventListener("resize", onResize);
 
     const onMouseMove = (e: MouseEvent) => {
-      uniforms.uMouse.value.set(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
+      uniforms.uMouse.value.set(
+        e.clientX / window.innerWidth,
+        e.clientY / window.innerHeight
+      );
     };
     window.addEventListener("mousemove", onMouseMove);
 
@@ -216,7 +221,8 @@ export function ThreeBackground() {
       material.dispose();
       texture.dispose();
       renderer.dispose();
-      if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+      if (container.contains(renderer.domElement))
+        container.removeChild(renderer.domElement);
     };
   }, []);
 
