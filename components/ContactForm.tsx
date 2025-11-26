@@ -63,72 +63,64 @@ function AppleToast({
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [sending, setSending] = useState(false);
+
   const [mounted, setMounted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
 
-  const showToast = () => {
-    setToastOpen(true);
-    window.setTimeout(() => setToastOpen(false), 2200);
-  };
+    // показываем toast после успешной отправки (FormSubmit вернёт нас на _next)
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("sent") === "1") {
+      setToastOpen(true);
+      window.setTimeout(() => setToastOpen(false), 2200);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (sending) return;
-
-    setSending(true);
-
-    try {
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-
-      // антиспам (honeypot). Если бот заполнил — не отправляем.
-      const honey = formData.get("_honey");
-      if (typeof honey === "string" && honey.trim().length > 0) {
-        form.reset();
-        setSending(false);
-        return;
-      }
-
-      const res = await fetch(
-        "https://formsubmit.co/ajax/kovtun.k.s.nun@gmail.com",
-        {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: formData,
-        }
-      );
-
-      if (!res.ok) throw new Error("Submit failed");
-
-      showToast();
-      form.reset();
-    } catch {
-      alert("Не удалось отправить сообщение. Попробуйте позже.");
-    } finally {
-      setSending(false);
+      // чистим URL, чтобы toast не всплывал при обновлении
+      url.searchParams.delete("sent");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     }
+  }, []);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (sending) {
+      e.preventDefault();
+      return;
+    }
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    // honeypot: если бот заполнил — не отправляем
+    const honey = formData.get("_honey");
+    if (typeof honey === "string" && honey.trim().length > 0) {
+      e.preventDefault();
+      form.reset();
+      return;
+    }
+
+    // даём отправиться нативно
+    setSending(true);
   };
 
   return (
     <>
-      {/* Portal, чтобы fixed был относительно всего окна (а не transform-контейнера) */}
       {mounted && createPortal(<AppleToast open={toastOpen} />, document.body)}
 
       <form
         ref={formRef}
         onSubmit={onSubmit}
+        action="https://formsubmit.co/kovtun.k.s.nun@gmail.com"
+        method="POST"
         className="flex flex-col gap-4 pt-6 sm:pt-8 border-t border-white/15 text-white"
       >
         {/* FormSubmit settings */}
         <input type="hidden" name="_captcha" value="false" />
-        <input
-          type="hidden"
-          name="_subject"
-          value="Заявка с сайта (kovtun-cio.ru)"
-        />
+        <input type="hidden" name="_subject" value="Заявка с сайта (kovtun-cio.ru)" />
+
+        {/* куда вернуть после успеха */}
+        <input type="hidden" name="_next" value="https://kovtun-cio.ru/?sent=1" />
 
         {/* honeypot */}
         <input
