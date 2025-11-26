@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { HeroStats } from "./HeroStats";
 
 const MAIN_SLIDE_ID = "header"; // главный слева
-const CENTER_SLIDES = ["hero"]; // какие слайды по центру
 
 const items = [
   {
@@ -24,7 +24,6 @@ const items = [
     id: "hero",
     content: (
       <div className="flex flex-col gap-8 sm:gap-10 max-w-3xl">
-        {/* --- Заголовок и текст --- */}
         <div className="flex flex-col gap-4 sm:gap-6">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold leading-snug">
             Партнёр по архитектуре и управлению сложными ИТ-системами
@@ -38,31 +37,28 @@ const items = [
           </p>
 
           <div className="flex flex-wrap gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
-  <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
-    CI/CD и DevSecOps
-  </span>
-  <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
-    Интеграции с ФОИВ и регионами
-  </span>
-  <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
-    Патентованные архитектуры
-  </span>
-</div>
+            <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
+              CI/CD и DevSecOps
+            </span>
+            <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
+              Интеграции с ФОИВ и регионами
+            </span>
+            <span className="bg-white text-black px-3 py-1 rounded-full shadow-sm hover:bg-white/90 transition">
+              Патентованные архитектуры
+            </span>
+          </div>
         </div>
 
-        {/* --- Факты --- */}
         <div>
           <HeroStats />
         </div>
       </div>
     ),
   },
-
   {
     id: "why",
     content: (
       <div className="space-y-1 sm:space-y-2 max-w-2xl">
-        {/* Заголовок + текст */}
         <div className="space-y-1 sm:space-y-2">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Почему со мной работают
@@ -87,7 +83,6 @@ const items = [
           </p>
         </div>
 
-        {/* Вертикальный список преимуществ */}
         <div className="flex flex-col divide-y divide-white/45 text-sm sm:text-base md:text-lg">
           <div className="py-1 sm:py-2">
             <div className="font-semibold">Опыт гос-АИС</div>
@@ -124,12 +119,10 @@ const items = [
       </div>
     ),
   },
-
   {
     id: "services",
     content: (
       <div className="max-w-3xl space-y-8 sm:space-y-10">
-        {/* Заголовок + вступление */}
         <div className="space-y-1 sm:space-y-2">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Комплексные IT-решения и услуги
@@ -141,7 +134,6 @@ const items = [
           </p>
         </div>
 
-        {/* Список услуг */}
         <div className="text-sm sm:text-base md:text-lg text-white/85">
           <div className="flex flex-col divide-y divide-white/45">
             {[
@@ -182,12 +174,10 @@ const items = [
       </div>
     ),
   },
-
   {
     id: "projects",
     content: (
       <div className="w-full max-w-[min(100vw-2.5rem,52rem)] space-y-4 md:space-y-10">
-        {/* Заголовок */}
         <div className="space-y-1 md:space-y-2">
           <h2 className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Примеры реализованных проектов
@@ -198,7 +188,6 @@ const items = [
           </p>
         </div>
 
-        {/* Список проектов */}
         <div className="flex flex-col divide-y divide-white/45 text-sm sm:text-base">
           {[
             {
@@ -247,7 +236,6 @@ const items = [
       </div>
     ),
   },
-
   {
     id: "testimonials",
     content: (
@@ -292,12 +280,10 @@ const items = [
       </div>
     ),
   },
-
   {
     id: "contacts",
     content: (
       <div className="space-y-8 sm:space-y-10 max-w-xl">
-        {/* Заголовок */}
         <div className="space-y-4 sm:space-y-5">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Свяжитесь со мной
@@ -312,7 +298,6 @@ const items = [
           </p>
         </div>
 
-        {/* Контакты */}
         <div className="space-y-3 text-sm md:text-base">
           <div>
             <div className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/60">
@@ -350,18 +335,13 @@ const items = [
           </div>
         </div>
 
-        {/* ФОРМА */}
         <form
           action="https://formsubmit.co/kovtun.k.s.nun@gmail.com"
           method="POST"
           className="flex flex-col gap-4 pt-6 sm:pt-8 border-t border-white/15 text-white"
         >
           <input type="hidden" name="_captcha" value="false" />
-          <input
-            type="hidden"
-            name="_next"
-            value="https://your-domain.ru/thanks"
-          />
+          <input type="hidden" name="_next" value="https://your-domain.ru/thanks" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -462,7 +442,6 @@ export function BiographyHorizontal() {
       const dx = t.clientX - touchStartX.current;
       const dy = t.clientY - touchStartY.current;
 
-      // горизонтальный свайп и достаточно длинный
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
         if (isAnimatingRef.current) return;
         const direction = dx < 0 ? 1 : -1; // влево → следующий
@@ -479,10 +458,21 @@ export function BiographyHorizontal() {
     };
   }, []);
 
-  const CENTER_SLIDES: string[] = []; // или вообще удали
+  // keyboard ←/→
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (isAnimatingRef.current) return;
 
-const activeItem = items[activeIndex];
-const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
+      if (e.key === "ArrowRight") goTo(activeIndexRef.current + 1);
+      if (e.key === "ArrowLeft") goTo(activeIndexRef.current - 1);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const activeItem = items[activeIndex];
+  const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
 
   return (
     <div className="relative min-h-screen">
@@ -507,12 +497,9 @@ const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
         >
           {items.map((item, index) => {
             const isMain = item.id === MAIN_SLIDE_ID;
-            const isCenter = CENTER_SLIDES.includes(item.id);
-
-            // На мобиле всё по центру, на десктопе — логика слева/центр/справа
             const alignClass = isMain
-  ? "items-center justify-center md:justify-start" // первый слева на десктопе
-  : "items-center justify-center md:justify-end";
+              ? "items-center justify-center md:justify-start"
+              : "items-center justify-center md:justify-end";
 
             const isActive = index === activeIndex;
 
@@ -532,11 +519,7 @@ const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
                     relative max-w-3xl
                     text-base md:text-lg leading-relaxed
                     transition-all duration-700
-                    ${
-                      isActive
-                        ? "opacity-100 translate-x-0"
-                        : "opacity-0 translate-x-6"
-                    }
+                    ${isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"}
                   `}
                 >
                   {item.content}
@@ -547,11 +530,51 @@ const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
         </article>
       </div>
 
-      {/* Пагинация 01 / 02 / 03 поверх всего */}
+      {/* Стрелки навигации (сверху справа) */}
+      <div className="fixed top-4 sm:top-6 right-4 sm:right-10 z-30 flex items-center gap-2">
+        <button
+          type="button"
+          aria-label="Предыдущий слайд"
+          onClick={() => goTo(activeIndexRef.current - 1)}
+          disabled={activeIndex === 0}
+          className={`
+            h-9 w-9 rounded-full border border-white/15
+            bg-white/5 backdrop-blur-md
+            grid place-items-center
+            transition
+            hover:bg-white/10 hover:border-white/25
+            disabled:opacity-30 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-white/30
+          `}
+        >
+          <ChevronLeft className="h-4 w-4 text-white/90" />
+        </button>
+
+        <button
+          type="button"
+          aria-label="Следующий слайд"
+          onClick={() => goTo(activeIndexRef.current + 1)}
+          disabled={activeIndex === items.length - 1}
+          className={`
+            h-9 w-9 rounded-full border border-white/15
+            bg-white/5 backdrop-blur-md
+            grid place-items-center
+            transition
+            hover:bg-white/10 hover:border-white/25
+            disabled:opacity-30 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-white/30
+          `}
+        >
+          <ChevronRight className="h-4 w-4 text-white/90" />
+        </button>
+      </div>
+
+      {/* Пагинация 01 / 02 / 03 */}
       <div className="fixed bottom-6 sm:bottom-8 right-4 sm:right-10 z-20 flex gap-3 sm:gap-4 text-[9px] sm:text-[10px] md:text-xs tracking-[0.35em] uppercase">
         {items.map((item, index) => {
           const label = String(index + 1).padStart(2, "0");
           const isActive = index === activeIndex;
+
           return (
             <button
               key={item.id}
