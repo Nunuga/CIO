@@ -256,7 +256,7 @@ export function ContactForm() {
               : "bg-white text-black hover:bg-white/80",
           ].join(" ")}
         >
-          {sending ? "Отправка.." : "Отправить"}
+          {sending ? "Отправка" : "Отправить"}
         </button>
       </form>
     </>
