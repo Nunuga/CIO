@@ -3,21 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-type ToastType = "success" | "error";
-
 function AppleToast({
   open,
-  type = "success",
-  title,
-  subtitle,
+  title = "Письмо отправлено",
+  subtitle = "Спасибо! Я скоро отвечу.",
 }: {
   open: boolean;
-  type?: ToastType;
-  title: string;
+  title?: string;
   subtitle?: string;
 }) {
-  const isSuccess = type === "success";
-
   return (
     <div
       className={[
@@ -39,46 +33,27 @@ function AppleToast({
       >
         <div className="flex items-start gap-3">
           <div className="mt-0.5 h-10 w-10 rounded-full bg-white/10 grid place-items-center border border-white/10">
-            {isSuccess ? (
-              <svg
-                viewBox="0 0 24 24"
-                className="h-5 w-5 text-white/90"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-            ) : (
-              <svg
-                viewBox="0 0 24 24"
-                className="h-5 w-5 text-white/90"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 9v4" />
-                <path d="M12 17h.01" />
-                <path d="M10.3 3.1h3.4L22 21H2L10.3 3.1z" />
-              </svg>
-            )}
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5 text-white/90"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
           </div>
 
           <div className="min-w-0">
             <div className="text-base font-semibold text-white/95 leading-6">
               {title}
             </div>
-            {subtitle ? (
-              <div className="text-sm text-white/70 leading-6 mt-0.5">
-                {subtitle}
-              </div>
-            ) : null}
+            <div className="text-sm text-white/70 leading-6 mt-0.5">
+              {subtitle}
+            </div>
           </div>
         </div>
       </div>
@@ -86,49 +61,17 @@ function AppleToast({
   );
 }
 
-function pickUtm() {
-  if (typeof window === "undefined") return {};
-  const p = new URLSearchParams(window.location.search);
-  const keys = [
-    "utm_source",
-    "utm_medium",
-    "utm_campaign",
-    "utm_content",
-    "utm_term",
-  ] as const;
-
-  const utm: Record<string, string> = {};
-  for (const k of keys) {
-    const v = p.get(k);
-    if (v) utm[k] = v;
-  }
-  return utm;
-}
-
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement | null>(null);
-
-  const [mounted, setMounted] = useState(false);
-  const [sending, setSending] = useState(false);
-
   const [toastOpen, setToastOpen] = useState(false);
-  const [toastType, setToastType] = useState<ToastType>("success");
-  const [toastTitle, setToastTitle] = useState("Письмо отправлено");
-  const [toastSubtitle, setToastSubtitle] = useState("Спасибо! Я скоро отвечу.");
+  const [sending, setSending] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const [utm, setUtm] = useState<Record<string, string>>({});
+  useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    setMounted(true);
-    setUtm(pickUtm());
-  }, []);
-
-  const showToast = (type: ToastType, title: string, subtitle?: string) => {
-    setToastType(type);
-    setToastTitle(title);
-    setToastSubtitle(subtitle ?? "");
+  const showToast = () => {
     setToastOpen(true);
-    window.setTimeout(() => setToastOpen(false), 2400);
+    window.setTimeout(() => setToastOpen(false), 2200);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -141,37 +84,29 @@ export function ContactForm() {
       const form = e.currentTarget;
       const formData = new FormData(form);
 
-      // антиспам (honeypot)
+      // антиспам (honeypot). Если бот заполнил — не отправляем.
       const honey = formData.get("_honey");
       if (typeof honey === "string" && honey.trim().length > 0) {
         form.reset();
-        showToast("success", "Спасибо!", "Сообщение принято.");
+        setSending(false);
         return;
       }
 
-      const payload: Record<string, any> = Object.fromEntries(formData.entries());
-
-      // добавляем UTM в payload (если есть)
-      Object.assign(payload, utm);
-
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Submit failed: ${res.status}`);
-      }
-
-      showToast("success", "Заявка отправлена", "Спасибо! Я скоро отвечу.");
-      form.reset();
-    } catch (err) {
-      showToast(
-        "error",
-        "Не удалось отправить",
-        "Попробуйте ещё раз или напишите в Telegram."
+      const res = await fetch(
+        "https://formsubmit.co/ajax/kovtun.k.s.nun@gmail.com",
+        {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        }
       );
+
+      if (!res.ok) throw new Error("Submit failed");
+
+      showToast();
+      form.reset();
+    } catch {
+      alert("Не удалось отправить сообщение. Попробуйте позже.");
     } finally {
       setSending(false);
     }
@@ -179,32 +114,30 @@ export function ContactForm() {
 
   return (
     <>
-      {mounted &&
-        createPortal(
-          <AppleToast
-            open={toastOpen}
-            type={toastType}
-            title={toastTitle}
-            subtitle={toastSubtitle}
-          />,
-          document.body
-        )}
+      {/* Portal, чтобы fixed был относительно всего окна (а не transform-контейнера) */}
+      {mounted && createPortal(<AppleToast open={toastOpen} />, document.body)}
 
       <form
         ref={formRef}
         onSubmit={onSubmit}
         className="flex flex-col gap-4 pt-6 sm:pt-8 border-t border-white/15 text-white"
       >
-        {/* honeypot: лучше не hidden, чтобы боты попадались */}
-        <div
-          aria-hidden="true"
-          className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden"
-        >
-          <label>
-            Leave empty
-            <input type="text" name="_honey" tabIndex={-1} autoComplete="off" />
-          </label>
-        </div>
+        {/* FormSubmit settings */}
+        <input type="hidden" name="_captcha" value="false" />
+        <input
+          type="hidden"
+          name="_subject"
+          value="Заявка с сайта (kovtun-cio.ru)"
+        />
+
+        {/* honeypot */}
+        <input
+          type="text"
+          name="_honey"
+          tabIndex={-1}
+          autoComplete="off"
+          className="hidden"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
@@ -222,26 +155,11 @@ export function ContactForm() {
             required
             className="bg-white/10 border border-white/20 px-4 py-3 rounded-lg text-sm sm:text-base outline-none focus:ring-2 focus:ring-white/40"
           />
-
-          {/* можно оставить только 2 поля, но B2B лучше конвертит с компанией/ролью */}
-          <input
-            type="text"
-            name="company"
-            placeholder="Компания (необязательно)"
-            className="bg-white/10 border border-white/20 px-4 py-3 rounded-lg text-sm sm:text-base outline-none focus:ring-2 focus:ring-white/40"
-          />
-
-          <input
-            type="text"
-            name="role"
-            placeholder="Роль (CEO/CTO/PM — необязательно)"
-            className="bg-white/10 border border-white/20 px-4 py-3 rounded-lg text-sm sm:text-base outline-none focus:ring-2 focus:ring-white/40"
-          />
         </div>
 
         <textarea
           name="message"
-          placeholder="Коротко: что болит и какой результат нужен?"
+          placeholder="Ваше сообщение"
           required
           className="bg-white/10 border border-white/20 px-4 py-3 rounded-lg h-28 sm:h-32 text-sm sm:text-base outline-none focus:ring-2 focus:ring-white/40"
         />
@@ -256,7 +174,7 @@ export function ContactForm() {
               : "bg-white text-black hover:bg-white/80",
           ].join(" ")}
         >
-          {sending ? "Отправка" : "Отправить"}
+          {sending ? "Отправка…" : "Отправить"}
         </button>
       </form>
     </>
