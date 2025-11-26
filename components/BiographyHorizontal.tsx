@@ -143,14 +143,14 @@ export function BiographyHorizontal() {
                   Написать в Telegram
                 </a>
 
-                <a
+                {/* <a
                   href={leadMagnetHref}
                   target="_blank"
                   rel="noreferrer"
                   className="px-4 py-2 rounded-full bg-white/5 border border-white/15 text-white/90 text-sm hover:bg-white/10 transition"
                 >
                   Скачать чек-лист IT-аудита (PDF)
-                </a>
+                </a> */}
               </div>
             </div>
 
@@ -324,7 +324,7 @@ export function BiographyHorizontal() {
                 <div className="mt-1 text-lg font-semibold">
                   CIO / Руководитель разработки (part-time)
                 </div>
-                <div className="mt-1 text-white/80 text-sm">150–250k ₽ / месяц</div>
+                <div className="mt-1 text-white/80 text-sm">от 200к ₽ / месяц</div>
                 <ul className="mt-3 space-y-1 text-sm text-white/70">
                   <li>— приоритизация, постановка системного управления</li>
                   <li>— контроль качества релизов и процессов</li>
@@ -341,14 +341,14 @@ export function BiographyHorizontal() {
               >
                 Записаться на созвон
               </button>
-              <a
+              {/* <a
                 href={leadMagnetHref}
                 target="_blank"
                 rel="noreferrer"
                 className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-white/15 transition"
               >
                 Скачать чек-лист (PDF)
-              </a>
+              </a> */}
             </div>
           </div>
         ),
