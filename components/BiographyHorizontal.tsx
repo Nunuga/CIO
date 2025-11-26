@@ -63,20 +63,11 @@ const items = [
     id: "why",
     content: (
       <div className="space-y-1 sm:space-y-2 max-w-2xl">
-        {/* <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
             Почему со мной работают
           </div>
-        </div> */}
-         <div className="space-y-1 sm:space-y-2">
-          <div className="text-xl sm:text-2xl md:text-4xl font-semibold">
-            Почему со мной работают
-          </div>
-          <p className="text-sm sm:text-base leading-relaxed text-white/80">
-            {/* Работаю как внешний CIO, руководитель разработки и архитектурный
-            консультант. Помогаю компаниям выстроить зрелую IT-функцию, повысить
-            устойчивость систем и получить понятный roadmap развития. */}
-          </p>
+          <p className="text-sm sm:text-base leading-relaxed text-white/80"></p>
         </div>
 
         <div className="flex flex-col divide-y divide-white/45 text-sm sm:text-base md:text-lg">
@@ -166,11 +157,6 @@ const items = [
                 title: "Процессы разработки, DevSecOps и CI/CD",
                 text: "Выстраиваю зрелый цикл разработки: конвейер CI/CD, регламенты, код-ревью, тестирование, автоматизация, контроль качества релизов и мониторинг на всех этапах.",
               },
-
-              // {
-              //   title: "Информационная безопасность и аттестация",
-              //   text: "Прорабатываю модель угроз, настраиваю сегментацию, DMZ, журналирование и контроль доступа. Готовлю системы к аттестации ФСТЭК/ФСБ с полным набором документов и рекомендаций.",
-              // },
             ].map((s) => (
               <div key={s.title} className="py-1 sm:py-2">
                 <div className="font-semibold text-base sm:text-lg md:text-2xl mb-1 sm:mb-1">
@@ -366,11 +352,25 @@ function ArrowIcon({ dir }: { dir: "left" | "right" }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      {dir === "left" ? (
-        <path d="M15 18l-6-6 6-6" />
-      ) : (
-        <path d="M9 6l6 6-6 6" />
-      )}
+      {dir === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 6l6 6-6 6" />}
+    </svg>
+  );
+}
+
+function ContactIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 21v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1" />
+      <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" />
     </svg>
   );
 }
@@ -384,6 +384,8 @@ export function BiographyHorizontal() {
 
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+
+  const CONTACTS_INDEX = items.findIndex((i) => i.id === "contacts");
 
   const clampIndex = (i: number) => Math.max(0, Math.min(items.length - 1, i));
 
@@ -467,6 +469,8 @@ export function BiographyHorizontal() {
   const activeItem = items[activeIndex];
   const isRightSlide = !!activeItem && activeItem.id !== MAIN_SLIDE_ID;
 
+  const isOnContacts = CONTACTS_INDEX >= 0 && activeIndex === CONTACTS_INDEX;
+
   return (
     <div className="relative min-h-screen">
       {/* Градиент справа — под текстом */}
@@ -491,7 +495,7 @@ export function BiographyHorizontal() {
           {items.map((item, index) => {
             const isMain = item.id === MAIN_SLIDE_ID;
 
-            // ✅ header: мобилка — вверх/влево, десктоп — как было (влево по горизонтали, по вертикали центр)
+            // header: мобилка — вверх/влево, десктоп — как было
             const alignClass = isMain
               ? "items-start justify-start md:items-center md:justify-start"
               : "items-center justify-center md:justify-end";
@@ -531,8 +535,27 @@ export function BiographyHorizontal() {
         </article>
       </div>
 
-      {/* Стрелки (сверху справа) */}
+      {/* Стрелки + Contacts (сверху справа) */}
       <div className="fixed top-4 sm:top-6 right-4 sm:right-10 z-30 flex items-center gap-2">
+        {/* кнопка контактов: скрываем на слайде contacts */}
+        {!isOnContacts && CONTACTS_INDEX >= 0 && (
+          <button
+            type="button"
+            aria-label="Перейти к контактам"
+            onClick={() => goTo(CONTACTS_INDEX)}
+            className={`
+              h-9 w-9 rounded-full border border-white/15
+              bg-white/5 backdrop-blur-md
+              grid place-items-center text-white/90
+              transition
+              hover:bg-white/10 hover:border-white/25
+              focus:outline-none focus:ring-2 focus:ring-white/30
+            `}
+          >
+            <ContactIcon />
+          </button>
+        )}
+
         <button
           type="button"
           aria-label="Предыдущий слайд"
