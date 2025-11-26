@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { HeroStats } from "./HeroStats";
 
 const MAIN_SLIDE_ID = "header"; // главный слева
@@ -55,6 +54,7 @@ const items = [
       </div>
     ),
   },
+
   {
     id: "why",
     content: (
@@ -119,6 +119,7 @@ const items = [
       </div>
     ),
   },
+
   {
     id: "services",
     content: (
@@ -174,6 +175,7 @@ const items = [
       </div>
     ),
   },
+
   {
     id: "projects",
     content: (
@@ -236,6 +238,7 @@ const items = [
       </div>
     ),
   },
+
   {
     id: "testimonials",
     content: (
@@ -280,6 +283,7 @@ const items = [
       </div>
     ),
   },
+
   {
     id: "contacts",
     content: (
@@ -341,7 +345,11 @@ const items = [
           className="flex flex-col gap-4 pt-6 sm:pt-8 border-t border-white/15 text-white"
         >
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value="https://your-domain.ru/thanks" />
+          <input
+            type="hidden"
+            name="_next"
+            value="https://your-domain.ru/thanks"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -380,6 +388,31 @@ const items = [
   },
 ];
 
+function ArrowIcon({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {dir === "left" ? (
+        <>
+          <path d="M15 18l-6-6 6-6" />
+        </>
+      ) : (
+        <>
+          <path d="M9 6l6 6-6 6" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export function BiographyHorizontal() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -387,7 +420,6 @@ export function BiographyHorizontal() {
   const isAnimatingRef = useRef(false);
   const activeIndexRef = useRef(0);
 
-  // touch-свайп
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
 
@@ -426,7 +458,7 @@ export function BiographyHorizontal() {
     return () => el.removeEventListener("wheel", onWheel as any);
   }, []);
 
-  // touch → свайп влево/вправо (мобилки/тачпады)
+  // touch → свайп
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -444,7 +476,7 @@ export function BiographyHorizontal() {
 
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
         if (isAnimatingRef.current) return;
-        const direction = dx < 0 ? 1 : -1; // влево → следующий
+        const direction = dx < 0 ? 1 : -1;
         goTo(activeIndexRef.current + direction);
       }
     };
@@ -476,7 +508,7 @@ export function BiographyHorizontal() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Градиент справа — ПОД текстом */}
+      {/* Градиент справа — под текстом */}
       <div
         className={`
           pointer-events-none
@@ -489,7 +521,7 @@ export function BiographyHorizontal() {
         `}
       />
 
-      {/* Контент поверх градиента */}
+      {/* Контент */}
       <div ref={scrollRef} className="relative z-10 overflow-hidden h-screen">
         <article
           className="flex h-full transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
@@ -530,7 +562,7 @@ export function BiographyHorizontal() {
         </article>
       </div>
 
-      {/* Стрелки навигации (сверху справа) */}
+      {/* Стрелки (сверху справа) */}
       <div className="fixed top-4 sm:top-6 right-4 sm:right-10 z-30 flex items-center gap-2">
         <button
           type="button"
@@ -540,14 +572,14 @@ export function BiographyHorizontal() {
           className={`
             h-9 w-9 rounded-full border border-white/15
             bg-white/5 backdrop-blur-md
-            grid place-items-center
+            grid place-items-center text-white/90
             transition
             hover:bg-white/10 hover:border-white/25
             disabled:opacity-30 disabled:cursor-not-allowed
             focus:outline-none focus:ring-2 focus:ring-white/30
           `}
         >
-          <ChevronLeft className="h-4 w-4 text-white/90" />
+          <ArrowIcon dir="left" />
         </button>
 
         <button
@@ -558,18 +590,18 @@ export function BiographyHorizontal() {
           className={`
             h-9 w-9 rounded-full border border-white/15
             bg-white/5 backdrop-blur-md
-            grid place-items-center
+            grid place-items-center text-white/90
             transition
             hover:bg-white/10 hover:border-white/25
             disabled:opacity-30 disabled:cursor-not-allowed
             focus:outline-none focus:ring-2 focus:ring-white/30
           `}
         >
-          <ChevronRight className="h-4 w-4 text-white/90" />
+          <ArrowIcon dir="right" />
         </button>
       </div>
 
-      {/* Пагинация 01 / 02 / 03 */}
+      {/* Пагинация */}
       <div className="fixed bottom-6 sm:bottom-8 right-4 sm:right-10 z-20 flex gap-3 sm:gap-4 text-[9px] sm:text-[10px] md:text-xs tracking-[0.35em] uppercase">
         {items.map((item, index) => {
           const label = String(index + 1).padStart(2, "0");
