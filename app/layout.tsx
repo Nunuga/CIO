@@ -10,6 +10,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "CIO — Кирилл Ковтун",
+  icons: {
+    icon: "/kk.png",
+    // apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
